@@ -80,7 +80,7 @@ void EEPROM(void) {
         INTERRUPT_InterruptOnChangeEnable();
         INTERRUPT_IOCPositiveEnable();
 
-        IOCBF0_SetInterruptHandler(Lab_EEPROM_ISR);
+        IOCBF6_SetInterruptHandler(Lab_EEPROM_ISR); /* EasyPIC v7: S1 on RB6 */
 
         LCD_GoTo(0, 0);
         LCD_WriteString((const uint8_t *)"     EEPROM        ");

@@ -1,7 +1,12 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><configurationDescriptor version="65">
-  <logicalFolder displayName="root" name="root" projectFiles="true">
-    <logicalFolder displayName="Header Files" name="HeaderFiles" projectFiles="true">
-      <logicalFolder displayName="MCC Generated Files" name="MCC Generated Files" projectFiles="true">
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="65">
+  <logicalFolder name="root" displayName="root" projectFiles="true">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="MCC Generated Files"
+                     displayName="MCC Generated Files"
+                     projectFiles="true">
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/mcc.h</itemPath>
         <itemPath>mcc_generated_files/spi1.h</itemPath>
@@ -17,43 +22,73 @@
       <itemPath>labs.h</itemPath>
       <itemPath>lcd.h</itemPath>
     </logicalFolder>
-    <logicalFolder displayName="Source Files" name="SourceFiles" projectFiles="true">
-      <logicalFolder displayName="Labs" name="Labs" projectFiles="true">
-        <logicalFolder displayName="Lab01_HelloWorld" name="Lab01_HelloWorld" projectFiles="true">
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="true">
+      <itemPath>Makefile</itemPath>
+      <itemPath>device_config.mc3</itemPath>
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="Labs" displayName="Labs" projectFiles="true">
+        <logicalFolder name="Lab01_HelloWorld"
+                       displayName="Lab01_HelloWorld"
+                       projectFiles="true">
           <itemPath>Labs/Lab01_HelloWorld/HelloWorld.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab02_Blink" name="Lab02_Blink" projectFiles="true">
+        <logicalFolder name="Lab02_Blink" displayName="Lab02_Blink" projectFiles="true">
           <itemPath>Labs/Lab02_Blink/Blink.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab03_Rotate" name="Lab03_Rotate" projectFiles="true">
+        <logicalFolder name="Lab03_Rotate"
+                       displayName="Lab03_Rotate"
+                       projectFiles="true">
           <itemPath>Labs/Lab03_Rotate/Rotate.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab04_AnalogToDigitalConverter" name="Lab04_AnalogToDigitalConverter" projectFiles="true">
+        <logicalFolder name="Lab04_AnalogToDigitalConverter"
+                       displayName="Lab04_AnalogToDigitalConverter"
+                       projectFiles="true">
           <itemPath>Labs/Lab04_AnalogToDigitalConverter/ADC.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab05_VariableSpeedRotate" name="Lab05_VariableSpeedRotate" projectFiles="true">
+        <logicalFolder name="Lab05_VariableSpeedRotate"
+                       displayName="Lab05_VariableSpeedRotate"
+                       projectFiles="true">
           <itemPath>Labs/Lab05_VariableSpeedRotate/VSR.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab06_Debounce" name="Lab06_Debounce" projectFiles="true">
+        <logicalFolder name="Lab06_Debounce"
+                       displayName="Lab06_Debounce"
+                       projectFiles="true">
           <itemPath>Labs/Lab06_Debounce/Debounce.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab07_PulseWidthModulation" name="Lab07_PulseWidthModulation" projectFiles="true">
+        <logicalFolder name="Lab07_PulseWidthModulation"
+                       displayName="Lab07_PulseWidthModulation"
+                       projectFiles="true">
           <itemPath>Labs/Lab07_PulseWidthModulation/PWM.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab08_Timers" name="Lab08_Timers" projectFiles="true">
+        <logicalFolder name="Lab08_Timers"
+                       displayName="Lab08_Timers"
+                       projectFiles="true">
           <itemPath>Labs/Lab08_Timers/Timer1.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab09_Interrupts" name="Lab09_Interrupts" projectFiles="true">
+        <logicalFolder name="Lab09_Interrupts"
+                       displayName="Lab09_Interrupts"
+                       projectFiles="true">
           <itemPath>Labs/Lab09_Interrupts/Interrupt.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab10_SleepWakeUp" name="Lab10_SleepWakeUp" projectFiles="true">
+        <logicalFolder name="Lab10_SleepWakeUp"
+                       displayName="Lab10_SleepWakeUp"
+                       projectFiles="true">
           <itemPath>Labs/Lab10_SleepWakeUp/SleepWakeUp.c</itemPath>
         </logicalFolder>
-        <logicalFolder displayName="Lab11_EEPROM" name="Lab11_EEPROM" projectFiles="true">
+        <logicalFolder name="Lab11_EEPROM"
+                       displayName="Lab11_EEPROM"
+                       projectFiles="true">
           <itemPath>Labs/Lab11_EEPROM/EEPROM.c</itemPath>
         </logicalFolder>
       </logicalFolder>
-      <logicalFolder displayName="MCC Generated Files" name="MCC Generated Files" projectFiles="true">
+      <logicalFolder name="MCC Generated Files"
+                     displayName="MCC Generated Files"
+                     projectFiles="true">
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
         <itemPath>mcc_generated_files/mcc.c</itemPath>
         <itemPath>mcc_generated_files/spi1.c</itemPath>
@@ -69,10 +104,6 @@
       <itemPath>main.c</itemPath>
       <itemPath>lcd.c</itemPath>
     </logicalFolder>
-    <logicalFolder displayName="Important Files" name="ExternalFiles" projectFiles="false">
-      <itemPath>Makefile</itemPath>
-      <itemPath>device_config.mc3</itemPath>
-    </logicalFolder>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -80,16 +111,18 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <targetDevice>PIC18F45K42</targetDevice>
-        <targetHeader/>
-        <targetPluginBoard/>
-        <platformTool>PICkit3PlatformTool</platformTool>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool></platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.10</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.0.48"/>
+        <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.15.303"/>
       </packs>
+      <ScriptingSettings>
+      </ScriptingSettings>
       <compileType>
         <linkerTool>
           <linkerLibItems>
@@ -100,16 +133,17 @@
         <loading>
           <useAlternateLoadableFile>false</useAlternateLoadableFile>
           <parseOnProdLoad>false</parseOnProdLoad>
-          <alternateLoadableFile/>
+          <alternateLoadableFile></alternateLoadableFile>
         </loading>
         <subordinates>
         </subordinates>
       </compileType>
       <makeCustomizationType>
         <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
-        <makeCustomizationPreStep/>
+        <makeUseCleanTarget>false</makeUseCleanTarget>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
-        <makeCustomizationPostStep/>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
@@ -124,15 +158,6 @@
       <HI-TECH-LINK>
         <property key="data-model-size-of-double-float" value="24 bit"/>
       </HI-TECH-LINK>
-      <PICkit3PlatformTool>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="5.0"/>
-      </PICkit3PlatformTool>
-      <PKOBSKDEPlatformTool>
-        <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.uselvpprogramming" value="true"/>
-      </PKOBSKDEPlatformTool>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
       </XC8-CO>
@@ -149,16 +174,18 @@
       <toolsSet>
         <developmentServer>localhost</developmentServer>
         <targetDevice>PIC18F45K42</targetDevice>
-        <targetHeader/>
-        <targetPluginBoard/>
-        <platformTool>PICkit3PlatformTool</platformTool>
+        <targetHeader></targetHeader>
+        <targetPluginBoard></targetPluginBoard>
+        <platformTool></platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.10</languageToolchainVersion>
         <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.0.48"/>
+        <pack name="PIC18F-K_DFP" vendor="Microchip" version="1.15.303"/>
       </packs>
+      <ScriptingSettings>
+      </ScriptingSettings>
       <compileType>
         <linkerTool>
           <linkerLibItems>
@@ -169,16 +196,17 @@
         <loading>
           <useAlternateLoadableFile>false</useAlternateLoadableFile>
           <parseOnProdLoad>false</parseOnProdLoad>
-          <alternateLoadableFile/>
+          <alternateLoadableFile></alternateLoadableFile>
         </loading>
         <subordinates>
         </subordinates>
       </compileType>
       <makeCustomizationType>
         <makeCustomizationPreStepEnabled>false</makeCustomizationPreStepEnabled>
-        <makeCustomizationPreStep/>
+        <makeUseCleanTarget>false</makeUseCleanTarget>
+        <makeCustomizationPreStep></makeCustomizationPreStep>
         <makeCustomizationPostStepEnabled>false</makeCustomizationPostStepEnabled>
-        <makeCustomizationPostStep/>
+        <makeCustomizationPostStep></makeCustomizationPostStep>
         <makeCustomizationPutChecksumInUserID>false</makeCustomizationPutChecksumInUserID>
         <makeCustomizationEnableLongLines>false</makeCustomizationEnableLongLines>
         <makeCustomizationNormalizeHexFile>false</makeCustomizationNormalizeHexFile>
@@ -193,15 +221,6 @@
       <HI-TECH-LINK>
         <property key="data-model-size-of-double-float" value="24 bit"/>
       </HI-TECH-LINK>
-      <PICkit3PlatformTool>
-        <property key="poweroptions.powerenable" value="false"/>
-        <property key="programoptions.uselvpprogramming" value="false"/>
-        <property key="voltagevalue" value="5.0"/>
-      </PICkit3PlatformTool>
-      <PKOBSKDEPlatformTool>
-        <property key="programoptions.eraseb4program" value="true"/>
-        <property key="programoptions.uselvpprogramming" value="true"/>
-      </PKOBSKDEPlatformTool>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
       </XC8-CO>
