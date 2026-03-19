@@ -47,6 +47,8 @@ All labs are written in C and use MPLAB X IDE with the XC8 compiler. Peripheral 
 
 ### D. Software Requirements
 
+**Option A — MPLAB X IDE (traditional)**
+
 | Tool | Version |
 |------|---------|
 | MPLAB X IDE | v5.15 or later |
@@ -54,6 +56,16 @@ All labs are written in C and use MPLAB X IDE with the XC8 compiler. Peripheral 
 | MPLAB Code Configurator (MCC) | v3.75 or later |
 
 Download: http://www.microchip.com/mplab/mplab-x-ide
+
+**Option B — VS Code with MPLAB Extensions**
+
+| Tool | Notes |
+|------|-------|
+| Visual Studio Code | Any recent version |
+| MPLAB Extension Pack (`Microchip.mplab-extension-pack`) | Install from VS Code Marketplace |
+| XC8 Compiler | v2.00 or later; install separately from Microchip |
+
+Download XC8: https://www.microchip.com/en-us/tools-resources/develop/mplab-xc-compilers
 
 ---
 
@@ -132,6 +144,8 @@ LCD shows `Value = x`.
 
 ## VI. Building and Programming
 
+### A. Using MPLAB X IDE
+
 1. Open `pic18f45k42-explorer8-labs.X` in MPLAB X IDE.
 2. Select **Project > Properties** and verify the XC8 compiler path.
 3. Connect the EasyPIC v7 board to your PC using the on-board mikroProg USB programmer
@@ -140,6 +154,64 @@ LCD shows `Value = x`.
 5. After programming, press the Reset button on EasyPIC v7.
 6. The LCD should display `Welcome / to EasyPIC v7`.
 7. Press **S2** (RB7) to enter Lab 1.
+
+### B. Using VS Code with MPLAB Extensions
+
+#### Prerequisites
+
+1. Install **Visual Studio Code**: https://code.visualstudio.com
+2. Install the **XC8 compiler** (v2.00 or later) from
+   https://www.microchip.com/en-us/tools-resources/develop/mplab-xc-compilers
+3. In VS Code, open the Extensions view (**Ctrl+Shift+X**), search for
+   **MPLAB Extension Pack**, and install `Microchip.mplab-extension-pack`.
+   This installs all required components including the project importer,
+   toolchain detector, language server, debugger adapter, and MCC.
+
+> **If XC8 was installed after the MPLAB extensions:** open the Command
+> Palette (**Ctrl+Shift+P**) and run **`MPLAB: Register Toolchains`**.
+> This rescans for installed compilers and registers any that were added
+> since the extension was first loaded.
+
+#### Importing the Project
+
+1. In VS Code, choose **File > Open Folder** (**Ctrl+K Ctrl+O**).
+2. Navigate to and select the **`pic18f45k42-explorer8-labs.X`** folder
+   (the MPLAB X project folder, not the repository root).
+3. VS Code will detect the MPLAB X project and prompt you to import it.
+   Accept the import — the **Project Importer for MPLAB** extension reads
+   `nbproject/configurations.xml` and creates a `.vscode/` folder with
+   a `mplab.json` configuration. Your original project files are not modified.
+
+#### Building
+
+- Press **Ctrl+Shift+B** or open the Command Palette and run
+  **`MPLAB CMake: Full Build`**.
+- Build output appears in the Terminal panel. A successful build produces
+  `dist/free/production/pic18f45k42-explorer8-labs.X.production.hex`.
+
+#### Configuring the Programmer
+
+1. Open the Command Palette and run **`MPLAB: Edit Project Properties (UI)`**.
+2. Under **Hardware Tool**, select your programmer (e.g., mikroProg, PICkit 3,
+   ICD 3).
+3. Confirm the **Device** is set to `PIC18F45K42` and the **Compiler** is `XC8`.
+
+#### Programming the Device
+
+1. Connect the EasyPIC v7 board via USB.
+2. Open the **Run and Debug** view (**Ctrl+Shift+D**).
+3. If no launch configuration exists, run **`Debug: Add Configuration`** and
+   select **MPLAB Debugger**.
+4. Press **F5** to build, program, and start a debug session, or use
+   **`MPLAB: Make and Program Device`** from the Command Palette to program
+   without debugging.
+5. After programming, press the Reset button on EasyPIC v7.
+6. The LCD should display `Welcome / to EasyPIC v7`.
+7. Press **S2** (RB7) to enter Lab 1.
+
+> **Note:** If you later modify project settings in MPLAB X IDE and the VS Code
+> build becomes stale, delete `.vscode/mplab.json` and re-open the folder to
+> trigger a fresh import.
 
 ---
 
