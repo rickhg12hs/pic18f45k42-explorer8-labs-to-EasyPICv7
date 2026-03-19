@@ -61,7 +61,7 @@
 /**
   Section: Local Function Prototypes
  */
-void FSCM_SwitchExternal(uint8_t val);
+void OSCCON1_Restore(uint8_t val);
 
 /*
                              Application    
@@ -90,10 +90,10 @@ void SleepWakeUp(void){
         LCD_GoTo(1,0);
         LCD_WriteString((const uint8_t *)"Wait for 8 secs "); 
         
-        // Switch back to external clock after sleeping
+        /* Save OSCCON1 before sleep; restore after WDT wakeup */
         uint8_t tmp = OSCCON1;
         SLEEP();
-        FSCM_SwitchExternal(tmp);
+        OSCCON1_Restore(tmp);
 
         labState = RUNNING;                                                     
     }
@@ -114,7 +114,8 @@ void SleepWakeUp(void){
     }           
 }
 
-void FSCM_SwitchExternal(uint8_t val) {
+/* Restore OSCCON1 after wakeup from sleep (clears any oscillator fail flag). */
+void OSCCON1_Restore(uint8_t val) {
     PIR0bits.OSFIF = 0;
     OSCCON1 = val;
 }
