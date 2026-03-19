@@ -58,7 +58,7 @@
 #include "adcc.h"
 #include "pwm2.h"
 #include "memory.h"
-#include "spi1.h"
+/* spi1.h removed: EasyPIC v7 LCD uses direct HD44780 parallel interface, not SPI */
 
 #define WDTCWS  7
 #define WDTCCS  16

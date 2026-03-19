@@ -59,20 +59,28 @@ void SYSTEM_Initialize(void)
     TMR2_Initialize();
     TMR1_Initialize();
     TMR0_Initialize();
-    SPI1_Initialize();
+    /* SPI1_Initialize() removed: EasyPIC v7 LCD uses direct HD44780 parallel interface */
 }
 
 void OSCILLATOR_Initialize(void)
 {
-    // NOSC EXTOSC; NDIV 1; 
-    OSCCON1 = 0x70;
-    // CSWHOLD may proceed; SOSCPWR Low power; 
+    /*
+     * EasyPIC v7 clock configuration: use internal HFINTOSC at 8 MHz.
+     * This eliminates the Explorer 8 external crystal dependency and works
+     * on any EasyPIC v7 board without jumper configuration for the oscillator.
+     *
+     * NOSC = HFINTOSC (0b110 = 6); NDIV = 1 (0b0000)
+     * OSCCON1 = 0x60
+     */
+    // NOSC HFINTOSC; NDIV 1;
+    OSCCON1 = 0x60;
+    // CSWHOLD may proceed; SOSCPWR Low power;
     OSCCON3 = 0x00;
-    // MFOEN disabled; LFOEN disabled; ADOEN disabled; SOSCEN disabled; EXTOEN disabled; HFOEN disabled; 
+    // MFOEN disabled; LFOEN disabled; ADOEN disabled; SOSCEN disabled; EXTOEN disabled; HFOEN disabled;
     OSCEN = 0x00;
-    // HFFRQ 4_MHz; 
-    OSCFRQ = 0x02;
-    // TUN 0; 
+    // HFFRQ 8_MHz (0x03 = 8 MHz for HFINTOSC);
+    OSCFRQ = 0x03;
+    // TUN 0;
     OSCTUNE = 0x00;
 }
 
