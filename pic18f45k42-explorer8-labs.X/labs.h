@@ -61,17 +61,19 @@ SUBSTITUTE GOODS, TECHNOLOGY, SERVICES, OR ANY CLAIMS BY THIRD PARTIES
     #define NOT_RUNNING         0
     #define RIGHT               1
     #define LEFT                0
-    #define LEDs                LATB
-    #define LEDs_SetLow()       do { LATB = 0; } while(0)
-    #define LEDs_ShiftRight()   do { LATB <<= 1; } while(0)
-    #define LEDs_ShiftLeft()    do { LATB >>= 1; } while(0)
+    /* EasyPIC v7: LEDs are on PORTD (RD0=D6, RD1=D7, RD2=D8) via DIP switch SW3 */
+    #define LEDs                LATD
+    #define LEDs_SetLow()       do { LATD = 0; } while(0)
+    #define LEDs_ShiftRight()   do { LATD <<= 1; } while(0)
+    #define LEDs_ShiftLeft()    do { LATD >>= 1; } while(0)
 
     #define INTERRUPT_TMR0InterruptEnable()         do { PIE3bits.TMR0IE = 1; } while(0)
     #define INTERRUPT_InterruptOnChangeEnable()     do { PIE0bits.IOCIE = 1; } while(0)
-    #define INTERRUPT_IOCPositiveEnable()           do { IOCBP0 = 1; } while(0)
+    /* EasyPIC v7: S1 button is on RB6; IOC positive-edge on IOCBP6 */
+    #define INTERRUPT_IOCPositiveEnable()           do { IOCBP6 = 1; } while(0)
     #define INTERRUPT_TMR0InterruptDisable()        do { PIE3bits.TMR0IE = 0; } while(0)
     #define INTERRUPT_InterruptOnChangeDisable()    do { PIE0bits.IOCIE = 0; } while(0)
-    #define INTERRUPT_IOCPositiveDisable()          do { IOCBP0 = 0; } while(0)
+    #define INTERRUPT_IOCPositiveDisable()          do { IOCBP6 = 0; } while(0)
 
 
 /**
