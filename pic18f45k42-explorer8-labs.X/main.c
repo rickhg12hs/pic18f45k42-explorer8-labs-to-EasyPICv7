@@ -48,7 +48,8 @@
 /**
   Section: Macro Declarations
  */
-#define SWITCH_S1_TTL()    do { INLVLBbits.INLVLB0 =0; } while(0) 
+/* EasyPIC v7: S1 button is on RB6; set TTL input level for RB6 */
+#define SWITCH_S1_TTL()    do { INLVLBbits.INLVLB6 = 0; } while(0)
  
 void checkButtonS2(void);
 void nextLab(void);
@@ -69,7 +70,7 @@ void main(void) {
     LCD_GoTo(0,0);
     LCD_WriteString((const uint8_t *)"    Welcome     ");
     LCD_GoTo(1,0);
-    LCD_WriteString((const uint8_t *)"  to Explorer 8 ");
+    LCD_WriteString((const uint8_t *)" to EasyPIC v7  ");
     
     while (1){
         checkButtonS2();
