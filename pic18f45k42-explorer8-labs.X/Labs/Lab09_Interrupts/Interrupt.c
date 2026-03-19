@@ -80,7 +80,7 @@ void Interrupt(void){
         INTERRUPT_TMR0InterruptEnable();
         
         TMR0_SetInterruptHandler(Lab_Timer0_ISR);
-        IOCBF0_SetInterruptHandler(Lab_IOC_ISR); 
+        IOCBF6_SetInterruptHandler(Lab_IOC_ISR); /* EasyPIC v7: S1 on RB6 */
         
         rotateDirection = RIGHT;
         rotateCounter = 6;

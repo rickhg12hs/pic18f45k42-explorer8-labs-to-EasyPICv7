@@ -20,38 +20,44 @@
         Compiler          :  XC8 2.00
         MPLAB             :  MPLAB X 5.10
 
+  Notes:
+    Adapted for EasyPIC v7 development board.
+    - LEDs moved from PORTB (RB1-RB3) to PORTD (RD0-RD2)
+    - Buttons moved: S1 from RB0 to RB6, S2 from RA5 to RB7
+    - LCD pins on PORTB (RB0-RB5) for direct HD44780 4-bit parallel interface
+    - SPI1 PPS removed (LCD no longer uses SPI/I2C expander)
+    - IOC moved from IOCBF0 to IOCBF6 (S1 button now on RB6)
+
     Copyright (c) 2013 - 2015 released Microchip Technology Inc.  All rights reserved.
 */
 
 /*
-    (c) 2018 Microchip Technology Inc. and its subsidiaries. 
-    
-    Subject to your compliance with these terms, you may use Microchip software and any 
-    derivatives exclusively with Microchip products. It is your responsibility to comply with third party 
-    license terms applicable to your use of third party software (including open source software) that 
+    (c) 2018 Microchip Technology Inc. and its subsidiaries.
+
+    Subject to your compliance with these terms, you may use Microchip software and any
+    derivatives exclusively with Microchip products. It is your responsibility to comply with third party
+    license terms applicable to your use of third party software (including open source software) that
     may accompany Microchip software.
-    
-    THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER 
-    EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY 
-    IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS 
+
+    THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES, WHETHER
+    EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE, INCLUDING ANY
+    IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY, AND FITNESS
     FOR A PARTICULAR PURPOSE.
-    
-    IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, 
-    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND 
-    WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP 
-    HAS BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO 
-    THE FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL 
-    CLAIMS IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT 
-    OF FEES, IF ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS 
+
+    IN NO EVENT WILL MICROCHIP BE LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE,
+    INCIDENTAL OR CONSEQUENTIAL LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND
+    WHATSOEVER RELATED TO THE SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP
+    HAS BEEN ADVISED OF THE POSSIBILITY OR THE DAMAGES ARE FORESEEABLE. TO
+    THE FULLEST EXTENT ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL
+    CLAIMS IN ANY WAY RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT
+    OF FEES, IF ANY, THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS
     SOFTWARE.
 */
 
 #include "pin_manager.h"
 
 
-
-
-void (*IOCBF0_InterruptHandler)(void);
+void (*IOCBF6_InterruptHandler)(void);
 
 
 void PIN_MANAGER_Initialize(void)
@@ -67,33 +73,40 @@ void PIN_MANAGER_Initialize(void)
 
     /**
     TRISx registers
+    PORTA: RA0 = input (POT analog), rest inputs
+    PORTB: RB0-RB5 = output (LCD), RB6 = input (S1), RB7 = input (S2)
+    PORTC: all inputs (unused)
+    PORTD: RD0-RD2 = output (LEDs), rest inputs
+    PORTE: inputs
     */
     TRISE = 0x07;
-    TRISA = 0xFB;
-    TRISB = 0xF1;
-    TRISC = 0xD7;
-    TRISD = 0xFF;
+    TRISA = 0xFF;   // All PORTA inputs (RA0 = POT analog input)
+    TRISB = 0xC0;   // RB0-RB5 output (LCD), RB6 input (S1), RB7 input (S2)
+    TRISC = 0xFF;   // All PORTC inputs (unused)
+    TRISD = 0xF8;   // RD0-RD2 output (LEDs D6/D7/D8), RD3-RD7 inputs
 
     /**
     ANSELx registers
+    Only RA0 is analog (potentiometer); all others digital
     */
-    ANSELD = 0xFF;
-    ANSELC = 0xC7;
-    ANSELB = 0xF0;
+    ANSELD = 0x00;  // PORTD all digital (LEDs are digital outputs)
+    ANSELC = 0x00;  // PORTC all digital
+    ANSELB = 0x00;  // PORTB all digital (LCD + buttons)
     ANSELE = 0x07;
-    ANSELA = 0xDB;
+    ANSELA = 0xFE;  // RA0 analog (POT), rest digital (0b11111110)
 
     /**
     WPUx registers
+    Enable pull-ups on RB6 (S1) and RB7 (S2) — buttons are active LOW
     */
     WPUD = 0x00;
     WPUE = 0x00;
-    WPUB = 0x00;
+    WPUB = 0xC0;   // Enable pull-ups on RB6 and RB7
     WPUA = 0x00;
     WPUC = 0x00;
 
     /**
-    RxyI2C registers
+    RxyI2C registers - disable I2C slew rate control on all pins
     */
     RB1I2C = 0x00;
     RB2I2C = 0x00;
@@ -122,67 +135,61 @@ void PIN_MANAGER_Initialize(void)
 
 
     /**
-    IOCx registers 
+    IOCx registers - Interrupt on Change for SWITCH_S1 (RB6, positive edge)
     */
     //interrupt on change for group IOCBF - flag
-    IOCBFbits.IOCBF0 = 0;
+    IOCBFbits.IOCBF6 = 0;
     //interrupt on change for group IOCBN - negative
-    IOCBNbits.IOCBN0 = 0;
+    IOCBNbits.IOCBN6 = 0;
     //interrupt on change for group IOCBP - positive
-    IOCBPbits.IOCBP0 = 1;
-
-
+    IOCBPbits.IOCBP6 = 1;
 
     // register default IOC callback functions at runtime; use these methods to register a custom function
-    IOCBF0_SetInterruptHandler(IOCBF0_DefaultInterruptHandler);
-   
-    // Enable IOCI interrupt 
-    PIE0bits.IOCIE = 1; 
-    
-	
-    SPI1SCKPPS = 0x13;   //RC3->SPI1:SCK1;    
-    RC3PPS = 0x1E;   //RC3->SPI1:SCK1;    
-    RC5PPS = 0x1F;   //RC5->SPI1:SDO1;    
-    SPI1SDIPPS = 0x14;   //RC4->SPI1:SDI1;    
+    IOCBF6_SetInterruptHandler(IOCBF6_DefaultInterruptHandler);
+
+    // Enable IOCI interrupt
+    PIE0bits.IOCIE = 1;
+
+    // Note: SPI1 PPS removed - LCD now uses direct parallel interface (HD44780 4-bit mode)
 }
-  
+
 void PIN_MANAGER_IOC(void)
-{   
-	// interrupt on change for pin IOCBF0
-    if(IOCBFbits.IOCBF0 == 1)
+{
+    // interrupt on change for pin IOCBF6 (SWITCH_S1 on RB6)
+    if(IOCBFbits.IOCBF6 == 1)
     {
-        IOCBF0_ISR();  
-    }	
+        IOCBF6_ISR();
+    }
 }
 
 /**
-   IOCBF0 Interrupt Service Routine
+   IOCBF6 Interrupt Service Routine (SWITCH_S1 on RB6)
 */
-void IOCBF0_ISR(void) {
+void IOCBF6_ISR(void) {
 
-    // Add custom IOCBF0 code
+    // Add custom IOCBF6 code
 
     // Call the interrupt handler for the callback registered at runtime
-    if(IOCBF0_InterruptHandler)
+    if(IOCBF6_InterruptHandler)
     {
-        IOCBF0_InterruptHandler();
+        IOCBF6_InterruptHandler();
     }
-    IOCBFbits.IOCBF0 = 0;
+    IOCBFbits.IOCBF6 = 0;
 }
 
 /**
-  Allows selecting an interrupt handler for IOCBF0 at application runtime
+  Allows selecting an interrupt handler for IOCBF6 at application runtime
 */
-void IOCBF0_SetInterruptHandler(void (* InterruptHandler)(void)){
-    IOCBF0_InterruptHandler = InterruptHandler;
+void IOCBF6_SetInterruptHandler(void (* InterruptHandler)(void)){
+    IOCBF6_InterruptHandler = InterruptHandler;
 }
 
 /**
-  Default interrupt handler for IOCBF0
+  Default interrupt handler for IOCBF6
 */
-void IOCBF0_DefaultInterruptHandler(void){
-    // add your IOCBF0 interrupt custom code
-    // or set custom function using IOCBF0_SetInterruptHandler()
+void IOCBF6_DefaultInterruptHandler(void){
+    // add your IOCBF6 interrupt custom code
+    // or set custom function using IOCBF6_SetInterruptHandler()
 }
 
 /**
