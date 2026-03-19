@@ -101,31 +101,35 @@ void PWM(void){
 }
 
 void PWM_Output_D8_Enable (void){
-    PPSLOCK = 0x55; 
-    PPSLOCK = 0xAA; 
+    PPSLOCK = 0x55;
+    PPSLOCK = 0xAA;
     PPSLOCKbits.PPSLOCKED = 0x00; // unlock PPS
 
-    // Set D8 as the output of CCP2
-    RB3PPS = 0x0A;
+    /*
+     * EasyPIC v7: LED_D8 is on RD2 (not RB3 as on Explorer 8).
+     * RB3 is LCD data bit D7 on EasyPIC v7 and must not be used for PWM.
+     * Map CCP2 output to RD2 via PPS.
+     */
+    RD2PPS = 0x0A; // RD2 -> CCP2 output (same PPS code 0x0A)
 
-    PPSLOCK = 0x55; 
-    PPSLOCK = 0xAA; 
+    PPSLOCK = 0x55;
+    PPSLOCK = 0xAA;
     PPSLOCKbits.PPSLOCKED = 0x01; // lock PPS
 }
 
 void PWM_Output_D8_Disable (void){
-    PPSLOCK = 0x55; 
-    PPSLOCK = 0xAA; 
+    PPSLOCK = 0x55;
+    PPSLOCK = 0xAA;
     PPSLOCKbits.PPSLOCKED = 0x00; // unlock PPS
 
-    // Set D8 as GPIO pin
-    RB3PPS = 0x00;
+    // Release CCP2 from RD2; return RD2 to GPIO output
+    RD2PPS = 0x00;
 
-    PPSLOCK = 0x55; 
-    PPSLOCK = 0xAA; 
+    PPSLOCK = 0x55;
+    PPSLOCK = 0xAA;
     PPSLOCKbits.PPSLOCKED = 0x01; // lock PPS
-    
-    TRISBbits.TRISB3 = 0;
+
+    TRISDbits.TRISD2 = 0; // RD2 as GPIO output (LED_D8)
 }
 
 
